@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>trainologic - test</title>
+    <style>
+        body {
+            font-family: Menlo, Consolas, monospace;
+            color: #444;
+            font-size:1.5rem;
+        }
+        ul {
+            padding-left: 1em;
+            line-height: 2em;
+            list-style-type: none;
+        }
+        li > ul{
+            display:none;
+        }
+        .item-clicked {
+            background-color: #bcddfa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contact Tree</h1>
+    <div id="treeElement"></div>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script>
+        var contacts = [
+            {
+                id: 1,
+                name: "Friends",
+                type: "Group",
+                contacts: [
+                    { id: 2, name: "Udi", type: "Contact" },
+                    { id: 3, name: "Tommy", type: "Contact" },
+                    {
+                        id: 6,
+                        name: "Old Friends",
+                        type: "Group",
+                        contacts: [
+                            { id: 7, name: "Itay", type: "Contact" },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 4,
+                name: "Family",
+                type: "Group",
+                contacts: [
+                    { id: 5, name: "Roni", type: "Contact" },
+                ]
+            },
+            { id: 8, name: "Ori", type: "Contact" },
+        ];
+
+        closure(contacts);
+
+        function closure(contacts) {
+            var treeStr = "";
+
+            renderContactsTree(contacts);
+
+            $('#treeElement').html(treeStr);
+            $("li").click(function (e) {
+                e.stopPropagation();
+                $(".item-clicked").removeClass("item-clicked")
+                $(e.target).addClass("item-clicked");
+
+                var liClosest = $(e.target).closest("li");
+                if (liClosest.hasClass("group")) {
+                    liClosest.find("ul").first().toggle();
+                }
+            });
+
+            function renderContactsTree(treeGroup) {
+                treeStr += "<ul>";
+                for (var i = 0; i < treeGroup.length; i++) {
+                    if (treeGroup[i].type === "Group") {
+                        treeStr += "<li class='group'><div>" + treeGroup[i].name + "</div>"
+                        renderContactsTree(treeGroup[i].contacts);
+                        treeStr += "</li>";
+                    }
+                    else {
+                        treeStr += "<li>" + treeGroup[i].name + "</li> ";
+                    }
+                }
+                treeStr += "</ul>";
+            }
+        }
+    </script>
+</body>
+</html>
