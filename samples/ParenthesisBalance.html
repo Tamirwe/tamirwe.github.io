@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>parenthesis Balancing</title>
+    <style>
+        body {
+            
+            font-family: Menlo, Consolas, monospace;
+            color: #444;
+            font-size:1.5rem;
+        }
+        #phrase {
+            font-size: 1.2rem;
+            padding-left:5px;
+            width: 450px;
+            height: 40px;
+        }
+        #checkButt {
+            font-size: 1.2rem;
+            height: 46px;
+        }
+        #result {
+            font-size: 1.6rem;
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align:center;">
+        <h1>Check Parenthesis Balancing</h1>
+        <input id="phrase" value="(zxc)(z(x)c)zx(c)" /><button id="checkButt">Check Balance</button>
+        <div id="result"></div>
+    </div>
+
+    <br />
+    <pre style="text-align:unset">
+        
+    <u><b>javascript</b></u>
+         function isBalanced(str) {
+            str = str.replace(/[^\(\)]/g, '');
+            var isMatch = false, result = "Balanced !";
+            var matchIndex;
+
+            var arr = str.split('');
+            if (arr[0] == "(") {
+                isMatch = true;
+
+                while (arr.length > 0 && isMatch) {
+                    matchIndex = checkBalance(arr);
+                    if (matchIndex == 0) {
+                        isMatch = false;
+                    }
+                    else {
+                        arr.splice(matchIndex, 1)
+                        arr.shift();
+                    }
+                }
+            }
+
+            return isMatch;
+
+            function checkBalance(arr) {
+                var matchNum = 0;
+                var isOpen = false;
+
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] == '(') {
+                        if (!isOpen) {
+                            isOpen = true;
+                        }
+                        else {
+                            matchNum++;
+                        }
+                    }
+                    else if (isOpen && arr[i] == ')') {
+                        if (matchNum == 0) {
+                            return i;
+                        }
+                        else {
+                            matchNum--;
+                        }
+                    }
+                }
+                return 0;
+            }
+        }
+
+
+    <u><b>C#</b></u>
+        static void Main(string[] args)
+        {
+            string str = "(()())()((((())())())())";
+            str = "()";
+            str = "(()";
+            bool isMatch = true;
+            int matchIndex;
+
+
+            StringBuilder sb = new StringBuilder(str);
+
+            while (sb.Length > 0 && isMatch)
+            {
+                matchIndex = checkBalance(sb.ToString());
+                if (matchIndex == 0)
+                {
+                    isMatch = false;
+                }
+                else
+                {
+                    sb.Remove(matchIndex, 1);
+                    sb.Remove(0, 1);
+                }
+            }
+
+        }
+
+        private static int checkBalance(string str)
+        {
+            int matchNum = 0;
+            bool isOpen = false;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == '(')
+                {
+                    if (!isOpen)
+                    {
+                        isOpen = true;
+                    }
+                    else
+                    {
+                        matchNum++;
+                    }
+                }
+                else if (isOpen && str[i] == ')')
+                {
+                    if (matchNum == 0)
+                    {
+                        return i;
+                    }
+                    else
+                    {
+                        matchNum--;
+                    }
+                }
+            }
+            return 0;
+        }
+
+
+function bubbleSort(items) {
+  var length = items.length;
+  for (var i = 0; i < length; i++) { //Number of passes
+    for (var j = 0; j < (length - i - 1); j++) { //Notice that j < (length - i)
+      //Compare the adjacent positions
+      if(items[j] > items[j+1]) {
+        //Swap the numbers
+        var tmp = items[j];  //Temporary variable to hold the current number
+        items[j] = items[j+1]; //Replace current number with adjacent number
+        items[j+1] = tmp; //Replace adjacent number with current number
+      }
+    }        
+  }
+}
+</pre>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $("#checkButt").click(function () {
+                var result = "Balanced !";
+
+                if (!isBalanced($("#phrase").val())) {
+                    result = "Not " + result
+                }
+
+                $('#result').text(result);
+            });
+        });
+
+        function isBalanced(str) {
+            str = str.replace(/[^\(\)]/g, '');
+            var isMatch = false, result = "Balanced !";
+            var matchIndex;
+
+            var arr = str.split('');
+            if (arr[0] == "(") {
+                isMatch = true;
+
+                while (arr.length > 0 && isMatch) {
+                    matchIndex = checkBalance(arr);
+                    if (matchIndex == 0) {
+                        isMatch = false;
+                    }
+                    else {
+                        arr.splice(matchIndex, 1)
+                        arr.shift();
+                    }
+                }
+            }
+
+            return isMatch;
+
+            function checkBalance(arr) {
+                var matchNum = 0;
+                var isOpen = false;
+
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] == '(') {
+                        if (!isOpen) {
+                            isOpen = true;
+                        }
+                        else {
+                            matchNum++;
+                        }
+                    }
+                    else if (isOpen && arr[i] == ')') {
+                        if (matchNum == 0) {
+                            return i;
+                        }
+                        else {
+                            matchNum--;
+                        }
+                    }
+                }
+                return 0;
+            }
+        }
+
+
+
+    </script>
+</body>
+</html>
