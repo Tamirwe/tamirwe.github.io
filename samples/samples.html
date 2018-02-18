@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <pre>
+
+********* Singleton ******************
+
+using System;
+
+public class Singleton
+{
+   private static Singleton instance;
+
+   private Singleton() {}
+
+   public static Singleton Instance
+   {
+      get 
+      {
+         if (instance == null)
+         {
+            instance = new Singleton();
+         }
+         return instance;
+      }
+   }
+}
+
+
+
+********* Extension methods ******************
+
+//Extension methods must be defined in a static class
+    public static class StringExtension
+    {
+        // This is the extension method.
+        // The first parameter takes the "this" modifier
+        // and specifies the type for which the method is defined.
+        public static int WordCount(this String str)
+        {
+            return str.Split(new char[] {' ', '.','?'}, StringSplitOptions.RemoveEmptyEntries).Length;
+        }
+    }
+
+public static class ExtensionMethods
+{
+    public static string UppercaseFirstLetter(this string value)
+    {
+        // Uppercase the first letter in the string.
+        if (value.Length > 0)
+        {
+            char[] array = value.ToCharArray();
+            array[0] = char.ToUpper(array[0]);
+            return new string(array);
+        }
+        return value;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Use the string extension method on this value.
+        string value = "dot net perls";
+        value = value.UppercaseFirstLetter();
+        Console.WriteLine(value);
+    }
+}
+
+****** delegate **********
+using System;
+
+delegate string ConvertMethod(string inString);
+
+public class DelegateExample
+{
+   public static void Main()
+   {
+      // Instantiate delegate to reference UppercaseString method
+      ConvertMethod convertMeth = UppercaseString;
+      string name = "Dakota";
+      // Use delegate instance to call UppercaseString method
+      Console.WriteLine(convertMeth(name));
+   }
+
+   private static string UppercaseString(string inputString)
+   {
+      return inputString.ToUpper();
+   }
+}
+
+
+using System;
+using System.Collections.Generic;
+
+delegate T NumberChanger<T>(T n);
+namespace GenericDelegateAppl {
+   class TestDelegate {
+      static int num = 10;
+      
+      public static int AddNum(int p) {
+         num += p;
+         return num;
+      }
+      public static int MultNum(int q) {
+         num *= q;
+         return num;
+      }
+      public static int getNum() {
+         return num;
+      }
+      static void Main(string[] args) {
+         //create delegate instances
+         NumberChanger<int> nc1 = new NumberChanger<int>(AddNum);
+         NumberChanger<int> nc2 = new NumberChanger<int>(MultNum);
+         
+         //calling the methods using the delegate objects
+         nc1(25);
+         Console.WriteLine("Value of Num: {0}", getNum());
+         
+         nc2(5);
+         Console.WriteLine("Value of Num: {0}", getNum());
+         Console.ReadKey();
+      }
+   }
+}
+
+
+    ***** Generic ****
+
+        using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static List<T> GetInitializedList<T>(T value, int count)
+    {
+        // This generic method returns a List with ten elements initialized.
+        // ... It uses a type parameter.
+        // ... It uses the "open type" T.
+        List<T> list = new List<T>();
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(value);
+        }
+        return list;
+    }
+
+    static void Main()
+    {
+        // Use the generic method.
+        // ... Specifying the type parameter is optional here.
+        // ... Then print the results.
+        List<bool> list1 = GetInitializedList(true, 5);
+        List<string> list2 = GetInitializedList<string>("Perls", 3);
+        foreach (bool value in list1)
+        {
+            Console.WriteLine(value);
+        }
+        foreach (string value in list2)
+        {
+            Console.WriteLine(value);
+        }
+    }
+}
+
+
+****** Closures   ******
+function makeSizer(size) {
+  return function() {
+    document.body.style.fontSize = size + 'px';
+  };
+}
+
+var size12 = makeSizer(12);
+var size14 = makeSizer(14);
+var size16 = makeSizer(16);
+
+document.getElementById('size-12').onclick = size12;
+document.getElementById('size-14').onclick = size14;
+document.getElementById('size-16').onclick = size16;
+</pre>
+</body>
+</html>
