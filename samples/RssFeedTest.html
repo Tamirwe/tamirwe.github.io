@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    
+</head>
+<body>
+<pre>
+
+namespace WebApplication1.Controllers
+{
+    public class RssFeedController : ApiController
+    {
+        // GET: api/RssFeed
+        public List<Item> Get()
+        {
+            return Get((int)CategoriesEnum.News);
+        }
+
+        // GET: api/RssFeed/5
+        public List<Item> Get(int id)
+        {
+            string rssUrl = "";
+
+            switch (id)
+            {
+                case (int)CategoriesEnum.Sport:
+                    rssUrl = "http://rss.walla.co.il/?w=/3/0/12/@rss.e";
+                    break;
+                case (int)CategoriesEnum.Cars:
+                    rssUrl = "http://rss.walla.co.il/?w=/31/0/12/@rss.e";
+                    break;
+                case (int)CategoriesEnum.Business:
+                    rssUrl = "http://rss.walla.co.il/?w=/2/0/12/@rss.e";
+                    break;
+                case (int)CategoriesEnum.News:
+                    rssUrl = "http://rss.walla.co.il/?w=/1/0/12/@rss.e";
+                    break;
+                default:
+                    rssUrl = "http://rss.walla.co.il/?w=/1/0/12/@rss.e";
+                    break;
+            }
+
+            XmlReader reader = XmlReader.Create(rssUrl);
+
+            SyndicationFeed feed = SyndicationFeed.Load(reader);
+
+            List<Item> itemList = new List<Item>();
+
+            foreach (SyndicationItem item in feed.Items.OrderByDescending(x => x.PublishDate).Take(2))
+            {
+                Item myItem = new Item()
+                {
+                    Summary = item.Summary.Text,
+                    PubDate = item.PublishDate,
+                    Title = item.Title.Text
+                };
+
+                itemList.Add(myItem);
+            }
+
+            return itemList;
+        }
+    }
+    public enum CategoriesEnum
+    {
+        None,
+        News = 1,
+        Sport = 2,
+        Cars = 3,
+        Business = 4
+    }
+    public class Item
+    {
+        public DateTimeOffset PubDate { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public string Link { get; set; }
+        public CategoriesEnum Category { get; set; }
+    }
+}
+
+
+****************************************************************
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>וואלה!</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <div class="container1 fullBorder">
+        <div class="topBar"> This is where logo and reload should be</div>
+        <div class="rightList">
+            <ul>
+                <li category="1" class="active">וואלה! חדשות</li>
+                <li category="4">וואלה! עסקים</li>
+                <li category="2">וואלה! ספורט</li>
+                <li category="3">וואלה! רכב</li>
+            </ul>
+        </div>
+        <div class="itemsContainer">
+
+        </div>
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $(".rightList li").on("click", function () {
+
+                $(".rightList li").removeClass("active");
+                $(this).addClass("active");
+
+
+                var apiUrl = "http://localhost:59708/api/RssFeed/" + $(this).attr("category");
+
+                $.get(apiUrl, function (data, status) {
+
+                    $(".itemsContainer").html("");
+
+                    $.each(data, function (index, el) {
+
+                        var $itemDiv = $("<div class='item'></div>");
+                        var date = "<div>" + el.PubDate + "</div>";
+                        var title = "<div>" + el.Title + "</div>";
+                        var summary = "<div>" + el.Summary + "</div>";
+
+
+                        $itemDiv.append(date).append(title).append(summary);
+                        $(".itemsContainer").append($itemDiv);
+                        $(".item p").css({ "clear": "" });
+                    })
+
+                })
+            });
+
+            $(".rightList li[category='1']").trigger("click");
+
+        })
+
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+</pre>
+</body>
+</html>
