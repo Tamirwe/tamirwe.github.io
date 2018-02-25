@@ -117,39 +117,39 @@ namespace WebApplication1.Controllers
 <pre>
     <script>
 
-        $(document).ready(function () {
+                //$(document).ready(function () {
 
-            $(".rightList li").on("click", function () {
+        //    $(".rightList li").on("click", function () {
 
-                $(".rightList li").removeClass("active");
-                $(this).addClass("active");
-
-
-                var apiUrl = "http://localhost:59708/api/RssFeed/" + $(this).attr("category");
-
-                $.get(apiUrl, function (data, status) {
-
-                    $(".itemsContainer").html("");
-
-                    $.each(data, function (index, el) {
-
-                        var $itemDiv = $("<div class='item'></div>");
-                        var date = "<div>" + el.PubDate + "</div>";
-                        var title = "<div>" + el.Title + "</div>";
-                        var summary = "<div>" + el.Summary + "</div>";
+        //        $(".rightList li").removeClass("active");
+        //        $(this).addClass("active");
 
 
-                        $itemDiv.append(date).append(title).append(summary);
-                        $(".itemsContainer").append($itemDiv);
-                        $(".item p").css({ "clear": "" });
-                    })
+        //        var apiUrl = "http://localhost:59708/api/RssFeed/" + $(this).attr("category");
 
-                })
-            });
+        //        $.get(apiUrl, function (data, status) {
 
-            $(".rightList li[category='1']").trigger("click");
+        //            $(".itemsContainer").html("");
 
-        })
+        //            $.each(data, function (index, el) {
+
+        //                var $itemDiv = $("<div class='item'></div>");
+        //                var date = "<div>" + el.PubDate + "</div>";
+        //                var title = "<div>" + el.Title + "</div>";
+        //                var summary = "<div>" + el.Summary + "</div>";
+
+
+        //                $itemDiv.append(date).append(title).append(summary);
+        //                $(".itemsContainer").append($itemDiv);
+        //                $(".item p").css({ "clear": "" });
+        //            })
+
+        //        })
+        //    });
+
+        //    $(".rightList li[category='1']").trigger("click");
+
+        //})
 
 
     </script>
