@@ -5,14 +5,46 @@
     <title></title>
 </head>
 <body>
+    <b><u>UPDATE by other table</u></b> <br />
+    <u>mySql</u><br />
     UPDATE Workers ,Bonuses<br />
     SET salary = (Salary + Bonuses.Bonus)<br />
     WHERE Workers.WorkerId = Bonuses.WorkerId<br />
-    <br /><br />
-
+    <u>sqlServer</u><br />
     UPDATE Workers<br />
     SET Workers.Salary =  (Workers.Salary + Bonuses.Bonus)<br />
     FROM Bonuses INNER JOIN Workers ON Bonuses.WorkerId = Workers.WorkerId<br />
+    <br />
+    <b><u>Filters Attributes</u></b><br />
+    <u>Four Basic Types of Filters</u><br />
+    Authentication<br />
+    Authorization<br />
+    Action<br />
+    Result<br />
+    <br />
+    [Authorize(Roles="trader")]<br />
+    [OutputCache(Duration=60)]<br />
+    [HttpGet]<br />
+    [HandleError]<br />
+    <br />
+    <b><u>GET  vs POST</u></b><br />
+    <u>GET</u><br />
+    query string (name/value pairs) is sent in the URL of a GET request:/test/demo_form.php?name1=value1&name2=value2<br />
+    GET requests can be cached<br />
+    GET requests remain in the browser history<br />
+    GET requests can be bookmarked<br />
+    GET requests should never be used when dealing with sensitive data<br />
+    GET requests have length restrictions<br />
+    GET requests should be used only to retrieve data<br />
+    Restrictions on data type Only ASCII characters allowed<br />
+    <br />
+    <u>POST</u><br />
+    query string (name/value pairs) is sent in the HTTP message body of a POST request:<br />
+    POST requests are never cached<br />
+    POST requests do not remain in the browser history<br />
+    POST requests cannot be bookmarked<br />
+    POST requests have no restrictions on data length<br />
+    Post No restrictions. Binary data is also allowed<br />
     <br /><br />
     <b><u>CLR</u></b><br />
     Common Language Runtime (CLR) is a managed execution environment that is part of Microsoft’s .NET framework.<br />
@@ -44,46 +76,48 @@
     <br /><br />
     <b><u>ArrayList vs List<> in C#</u></b><br />
     ArrayList can only create collection for Object type<br />
-    List<T> is a generic class.<br />
-    It supports storing values of a specific type without casting to or from object (which would have incurred boxing/unboxing overhead when T is a value type in the ArrayList case)<br />
-     List<T> implements the generic IEnumerable<T>
-    <br />
-    interface and can be used easily in LINQ<br />
-    <br /><br />
-    <b><u>dynamic and generics</u></b><br />
-    Generics allow you to know (at compile time) about the type you are working with (type safety)<br />
-    <br /><br />
-    <b><u>What does “where</u></b><br />
-    generic constraints to limit the type of each generic argument<br />
-    <b><u>What does “where T : class, new()”</u></b><br />
-    constraint on the generic parameter T. It must be a class (reference type) and must have a public parameter-less default constructor.<br />
-    That means T can't be an int, float, double, DateTime or any other struct (value type).<br />
-    It could be a string, or any other custom reference type, as long as it has a default or parameter-less constructor<br />
-    <br /><br />
-    <b><u>browser cache is a temporary storage location on your computer for files downloaded by your browser to display websites</u></b><br />
-    <br /><br />
-    <b><u>Reflection </u></b><br />
-    objects used for obtaining type information at runtime<br />
-    <br /><br />
-    <b><u>eval() JavaScript</u></b><br />
-    evaluates JavaScript code represented as a string. console.log(eval('2 + 2'));<br />
-    <br /><br />
-    <b><u>Javascript call() & apply() vs bind()?</u></b><br />
-    Call/apply call the function immediately,<br />
-    bind returns a function that, when later executed, will have the correct context set for calling the original function.<br />
-    This way you can maintain context in async callbacks and events<br />
-    <br />
-    var person = {<br />
-    name: "James Smith",<br />
-    hello: function(thing) {<br />
-    console.log(this.name + " says hello " + thing);<br />
-    }<br />
-    }<br />
+    List<T>
+        is a generic class.<br />
+        It supports storing values of a specific type without casting to or from object (which would have incurred boxing/unboxing overhead when T is a value type in the ArrayList case)<br />
+        List<T>
+            implements the generic IEnumerable<T>
+                <br />
+                interface and can be used easily in LINQ<br />
+                <br /><br />
+                <b><u>dynamic and generics</u></b><br />
+                Generics allow you to know (at compile time) about the type you are working with (type safety)<br />
+                <br /><br />
+                <b><u>What does “where</u></b><br />
+                generic constraints to limit the type of each generic argument<br />
+                <b><u>What does “where T : class, new()”</u></b><br />
+                constraint on the generic parameter T. It must be a class (reference type) and must have a public parameter-less default constructor.<br />
+                That means T can't be an int, float, double, DateTime or any other struct (value type).<br />
+                It could be a string, or any other custom reference type, as long as it has a default or parameter-less constructor<br />
+                <br /><br />
+                <b><u>browser cache is a temporary storage location on your computer for files downloaded by your browser to display websites</u></b><br />
+                <br /><br />
+                <b><u>Reflection </u></b><br />
+                objects used for obtaining type information at runtime<br />
+                <br /><br />
+                <b><u>eval() JavaScript</u></b><br />
+                evaluates JavaScript code represented as a string. console.log(eval('2 + 2'));<br />
+                <br /><br />
+                <b><u>Javascript call() & apply() vs bind()?</u></b><br />
+                Call/apply call the function immediately,<br />
+                bind returns a function that, when later executed, will have the correct context set for calling the original function.<br />
+                This way you can maintain context in async callbacks and events<br />
+                <br />
+                var person = {<br />
+                name: "James Smith",<br />
+                hello: function(thing) {<br />
+                console.log(this.name + " says hello " + thing);<br />
+                }<br />
+                }<br />
 
-    person.hello("world");  // output: "James Smith says hello world"<br />
-    person.hello.call({ name: "Jim Smith" }, "world"); // output: "Jim Smith says hello world"<br />
-    var helloFunc = person.hello.bind({ name: "Jim Smith" });<br />
-    helloFunc("world");  // output: Jim Smith says hello world"<br />
-    <br /><br />
+                person.hello("world");  // output: "James Smith says hello world"<br />
+                person.hello.call({ name: "Jim Smith" }, "world"); // output: "Jim Smith says hello world"<br />
+                var helloFunc = person.hello.bind({ name: "Jim Smith" });<br />
+                helloFunc("world");  // output: Jim Smith says hello world"<br />
+                <br /><br />
 </body>
 </html>
