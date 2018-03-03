@@ -104,6 +104,7 @@
                 <br /><br />
                 <b><u>browser cache is a temporary storage location on your computer for files downloaded by your browser to display websites</u></b><br />
                 <br /><br />
+        
                 <b><u>Reflection </u></b><br />
                 objects used for obtaining type information at runtime<br />
                 <br /><br />
@@ -127,6 +128,27 @@
                 var helloFunc = person.hello.bind({ name: "Jim Smith" });<br />
                 helloFunc("world");  // output: Jim Smith says hello world"<br />
                 <br /><br />
+        
+        <b><u>Ref</u></b><br />
+        static public void DoSomething(ref TestRef t) { <br />
+            t = new TestRef(); <br />
+        }<br />
+<br />
+        And t will be changed after the method has completed. an assignment is a modification of the reference, thus is lost:<br />
+<br />
+        public void Method1(object obj) { <br />
+            obj = new Object(); <br />
+        } <br />
+        public void Method2(object obj) { <br />
+            obj = _privateObject; <br />
+        }<br />
+        The methods above does not modifies the original object.<br />
+<br /><br />
+
+Basically, a Task<T> "promises" to return you a T, but not right now 
+        
+        
+        
         <div dir="rtl">
         <b><u>תאור מנוע חיפוש</u></b><br />
         
