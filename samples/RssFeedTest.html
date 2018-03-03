@@ -8,6 +8,15 @@
 <body>
 <pre>
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Xml;
+using Terradue.ServiceModel.Syndication;
+
 namespace WebApplication1.Controllers
 {
     public class RssFeedController : ApiController
@@ -35,7 +44,7 @@ namespace WebApplication1.Controllers
                     rssUrl = "http://rss.walla.co.il/?w=/2/0/12/@rss.e";
                     break;
                 case (int)CategoriesEnum.News:
-                    rssUrl = "http://rss.walla.co.il/?w=/1/0/12/@rss.e";
+                    rssUrl = "http://rss.walla.co.il/feed/316";
                     break;
                 default:
                     rssUrl = "http://rss.walla.co.il/?w=/1/0/12/@rss.e";
@@ -95,6 +104,11 @@ namespace WebApplication1.Controllers
     <title>וואלה!</title>
     <link href="~/Content/Site.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <style>
+        .itemsContainer img{
+            width:250px
+        }
+    </style>
 </head>
 <body>
     <div class="container1 fullBorder">
@@ -113,7 +127,7 @@ namespace WebApplication1.Controllers
     </div>
 
     <script>
--->
+    -->
         //$(document).ready(function () {
 
         //    $(".rightList li").on("click", function () {
@@ -148,6 +162,11 @@ namespace WebApplication1.Controllers
 
         //})
 
+<!--
+    </script>
+</body>
+</html>
+    -->
 
 
 
