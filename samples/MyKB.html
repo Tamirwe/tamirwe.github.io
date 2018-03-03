@@ -116,13 +116,14 @@
                 bind returns a function that, when later executed, will have the correct context set for calling the original function.<br />
                 This way you can maintain context in async callbacks and events<br />
                 <br />
-                var person = {<br />
-                name: "James Smith",<br />
-                hello: function(thing) {<br />
-                console.log(this.name + " says hello " + thing);<br />
-                }<br />
-                }<br />
-
+        <pre>
+                var person = {
+                       name: "James Smith",
+                       hello: function(thing)  {       
+                                console.log(this.name + " says hello " + thing);<br />
+                                }
+                }
+                </pre>
                 person.hello("world");  // output: "James Smith says hello world"<br />
                 person.hello.call({ name: "Jim Smith" }, "world"); // output: "Jim Smith says hello world"<br />
                 var helloFunc = person.hello.bind({ name: "Jim Smith" });<br />
@@ -130,18 +131,22 @@
                 <br /><br />
         
         <b><u>Ref</u></b><br />
+        <pre>
         static public void DoSomething(ref TestRef t) { <br />
             t = new TestRef(); <br />
-        }<br />
+        }
+        </pre>
 <br />
         And t will be changed after the method has completed. an assignment is a modification of the reference, thus is lost:<br />
 <br />
-        public void Method1(object obj) { <br />
-            obj = new Object(); <br />
-        } <br />
-        public void Method2(object obj) { <br />
-            obj = _privateObject; <br />
-        }<br />
+        <pre>
+        public void Method1(object obj) { 
+            obj = new Object(); 
+        } 
+        public void Method2(object obj) { 
+            obj = _privateObject; 
+        }
+        </pre>
         The methods above does not modifies the original object.<br />
 <br /><br />
 
