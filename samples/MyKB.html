@@ -132,11 +132,11 @@
         
         <b><u>Ref</u></b><br />
         <pre>
-        static public void DoSomething(ref TestRef t) { <br />
-            t = new TestRef(); <br />
+        static public void DoSomething(ref TestRef t) {
+            t = new TestRef(); 
         }
         </pre>
-        And t will be changed after the method has completed. an assignment is a modification of the reference, thus is lost:<br />
+        And t will be changed after the method has completed. an assignment is a modification of the reference, thus is lost:
         <pre>
         public void Method1(object obj) { 
             obj = new Object(); 
