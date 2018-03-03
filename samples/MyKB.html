@@ -115,7 +115,7 @@
                 Call/apply call the function immediately,<br />
                 bind returns a function that, when later executed, will have the correct context set for calling the original function.<br />
                 This way you can maintain context in async callbacks and events<br />
-                <br />
+                
         <pre>
                 var person = {
                        name: "James Smith",
@@ -155,8 +155,15 @@ Basically, a Task<T> "promises" to return you a T, but not right now
         
         
         <div dir="rtl">
-        <b><u>תאור מנוע חיפוש</u></b><br />
-        
+            <b><u>תאור חיפוש מהיר של שמות - autoComplete</u></b><br />
+            הבעיה חיפוש מהיר ב <br />
+            O של 1
+            שמות או התחלה של שם לדוגמא : א, אב, אבר וכו <br />
+            <br />פתרון אפשרי דיקדיונרי שיחזיק את כל הצירופים כמפתחות ואת כל האפשרויות כערך הערך יכול להיות כמערך של שמות
+            <br />לדוגמא המפתח א יהיה לו ערך מערך של השמות אברי, אברום, אברם, אבא , אקי , אמיקם וכו
+            המפתח אב יהיה לו ערך מערך של השמות אברי, אברום, אברם, אבא <br />
+            <br />
+        <b><u>תאור מנוע חיפוש</u></b><br />     
 יש צורך לחפש במהירות באלפי קבצים המכילים אלפי שורות טקסט.<br />
 בעברית יש בערך 650000 מילים ( 22 אותיות לידע כללי)<br />
 1. <br />נכניס את כל המילים לדיקשינרי הם יהיו המפתח ושמות הקבצים שמכילים את המילה יהיו הערך וגם הם יהיו בדיקשיונרי שבו הערך והמפתח הם שמות הקבצים
