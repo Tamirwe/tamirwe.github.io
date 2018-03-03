@@ -1,0 +1,777 @@
+<html>
+<head>
+<body>
+
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using TUcontacts.BL;
+using TUcontacts.Models;
+
+namespace TUcontacts.Controllers
+{
+    public class ContactsController : ApiController
+    {
+
+        public List<Contact> Get()
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            return contacts.ContactsList;
+        }
+
+        public List<Contact> Get(string keyWords, SearchBy searchBy)
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            return contacts.SearchBy(keyWords, searchBy);
+        }
+
+        public Contact Get(int id)
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            return contacts.getById(id);
+        }
+
+        public Contact Post(Contact contact)
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            contacts.Add(ref contact);
+            return contact;
+        }
+
+        [Route("api/Contacts/student")]
+        public Contact PutStudent(Student contact)
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            return contacts.Update(contact);
+        }
+
+        [Route("api/Contacts/alumni")]
+        public Contact PutAlumni(Alumni contact)
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            return contacts.Update(contact);
+        }
+
+        [Route("api/Contacts/lecturer")]
+        public Contact PutLecturer(Lecturer contact)
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            return contacts.Update(contact);
+        }
+
+        public void Delete(int id)
+        {
+            Contacts contacts = new Contacts(new ContactsStore());
+            contacts.Delete(id);
+        }
+
+    }
+}
+
+
+using System.Web;
+using TUcontacts.Models;
+
+namespace TUcontacts.BL
+{
+    public enum SearchBy { FirstName = 1, LastName = 2 };
+
+    public class Contacts
+    {
+        #region private variable
+
+        private ContactsStore contactsStore = null;
+        private List<Contact> contactsList = null;
+
+        #endregion
+
+        #region public properties
+
+        public List<Contact> ContactsList
+        {
+            get { return contactsList; }
+        }
+
+        #endregion
+
+        #region private methods
+
+        private void saveChanges()
+        {
+            contactsStore.ContactsList = contactsList;
+        }
+
+        private int contactId()
+        {
+            if (contactsList.Count > 0)
+            {
+                return contactsList.Max(x => x.Id) + 1;
+            }
+            return 1;
+        }
+
+        private void setContactCommonValues(Contact source, Contact dest)
+        {
+            dest.FirstName = source.FirstName;
+            dest.LastName = source.LastName;
+            dest.Email = source.Email;
+            dest.PhoneNum = source.PhoneNum;
+            if (dest.Id == 0)
+            {
+                dest.Id = contactId();
+            }
+        }
+
+        private void replaceContact(Contact contact)
+        {
+            int contactId = contactsStore.ContactsList.Where(x => x.Id == contact.Id).FirstOrDefault().Id;
+            Delete(contactId);
+            contactsList.Add(contact);
+        }
+
+        #endregion
+
+        #region public methods
+
+        public Contacts(ContactsStore contactsStore)
+        {
+            this.contactsStore = contactsStore;
+            if (contactsStore.ContactsList == null)
+            {
+                contactsList = new List<Contact>();
+            }
+            else
+            {
+                contactsList = contactsStore.ContactsList;
+            }
+        }
+
+        public List<Contact> SearchBy(string keyWord, SearchBy searchBy)
+        {
+            List<Contact> results = new List<Contact>();
+            if (keyWord != null && keyWord.Trim().Length > 0)
+            {
+                switch (searchBy)
+                {
+                    case BL.SearchBy.FirstName:
+                        results = contactsList.Where(x => x.FirstName.Contains(keyWord.Trim())).ToList();
+                        break;
+                    case BL.SearchBy.LastName:
+                        results = contactsList.Where(x => x.LastName.Contains(keyWord.Trim())).ToList();
+                        break;
+                }
+            }
+            else
+            {
+                results = contactsList;
+            }
+            return results;
+        }
+
+        public void Add(ref Contact contact)
+        {
+            Contact newContact = null;
+
+            switch (contact.ContactType)
+            {
+                case ContactType.Student:
+                    newContact = new Student();
+                    break;
+                case ContactType.Alumni:
+                    newContact = new Alumni();
+                    break;
+                case ContactType.Lecturer:
+                    newContact = new Lecturer();
+                    break;
+            }
+            setContactCommonValues(contact, newContact);
+            contactsList.Add(newContact);
+            saveChanges();
+            contact = newContact;
+        }
+
+        public void Delete(int id)
+        {
+            var contactToRemove = contactsList.SingleOrDefault(s => s.Id == id);
+            if (contactToRemove.Id != 0)
+            {
+                contactsList.Remove(contactToRemove);
+            }
+        }
+
+        public Student Update(Student contact)
+        {
+            Student student = null;
+            Contact existingContact = contactsStore.ContactsList.Where(x => x.Id == contact.Id).FirstOrDefault();
+
+            if (existingContact != null)
+            {
+                if (contact.ContactType != existingContact.ContactType)
+                {
+                    replaceContact(contact);
+                    student = contact;
+                }
+                else
+                {
+                    student = (Student)existingContact;
+                    setContactCommonValues(contact, student);
+                    student.Faculty = contact.Faculty;
+                }
+            }
+            saveChanges();
+            return student;
+        }
+
+        public Alumni Update(Alumni contact)
+        {
+            Alumni alumni = null;
+            Contact existingContact = contactsStore.ContactsList.Where(x => x.Id == contact.Id).FirstOrDefault();
+
+            if (existingContact != null)
+            {
+                if (contact.ContactType != existingContact.ContactType)
+                {
+                    replaceContact(contact);
+                    alumni = contact;
+                }
+                else
+                {
+                    if (existingContact != null)
+                    {
+                        alumni = (Alumni)existingContact;
+                        setContactCommonValues(contact, alumni);
+                        alumni.GraduationYear = contact.GraduationYear;
+                    }
+                }
+            }
+            saveChanges();
+            return alumni;
+        }
+
+        public Lecturer Update(Lecturer contact)
+        {
+            Lecturer lecturer = null;
+            Contact existingContact = contactsStore.ContactsList.Where(x => x.Id == contact.Id).FirstOrDefault();
+
+            if (existingContact != null)
+            {
+                if (contact.ContactType != existingContact.ContactType)
+                {
+                    replaceContact(contact);
+                    lecturer = contact;
+                }
+                else
+                {
+                    lecturer = (Lecturer)existingContact;
+                    setContactCommonValues(contact, lecturer);
+                    lecturer.Subject = contact.Subject;
+                }
+            }
+            saveChanges();
+            return lecturer;
+        }
+
+        public Contact getById(int id)
+        {
+            return contactsStore.ContactsList.Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        #endregion
+
+    }
+
+
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Caching;
+using System.Web;
+using TUcontacts.Models;
+
+namespace TUcontacts.BL
+{
+    public class ContactsStore
+    {
+        public List<Contact> ContactsList
+        {
+            get
+            {
+                MemoryCache memoryCache = MemoryCache.Default;
+                return (List<Contact>)memoryCache.Get("contactsList");
+            }
+            set
+            {
+                MemoryCache memoryCache = MemoryCache.Default;
+                memoryCache.Add("contactsList", value, DateTime.Now.AddMinutes(30));
+            }
+        }
+    }
+}
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace TUcontacts.Models
+{
+    public enum ContactType { Student = 1, Alumni = 2, Lecturer=3 };
+
+    public class Contact
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int PhoneNum { get; set; }
+        public string Email { get; set; }
+        public ContactType ContactType { get; set; }
+    }
+
+    public class Student: Contact
+    {
+        public Student()
+        {
+            base.ContactType = ContactType.Student;
+        }
+
+        public string Faculty { get; set; }
+    }
+
+    public class Alumni: Contact
+    {
+        public Alumni()
+        {
+            base.ContactType = ContactType.Alumni;
+        }
+
+        public int GraduationYear { get; set; }
+    }
+
+    public class Lecturer: Contact
+    {
+        public Lecturer()
+        {
+            base.ContactType = ContactType.Lecturer;
+        }
+
+        public string Subject { get; set; }
+    }
+}
+
+<!--
+<html>
+<head>
+    <title></title>
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
+
+    <style>
+        input{
+            padding:5px;
+            margin:5px;
+        }
+        select {
+            padding: 7px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body style="text-align:center;text-align:center">
+    <div style="vertical-align:top; padding-top:30px">
+        <div class="container" style="display:inline-block;vertical-align:top;text-align:left;border: 1px solid;">
+            <h3>Contacts List</h3>
+            <div>
+                <label>Search For</label>
+                <input id="keyWordsInput" type="text" />
+                <label>By</label>
+                <select id="searchBySelect">
+                    <option value="1">First Name</option>
+                    <option value="2">Last Name</option>
+                </select>
+                <input id="searchButton" type="button" value="Search" />
+            </div>
+            <div>
+                <table id="contactsTbl" class="table">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="container" style="display:inline-block;vertical-align:top;text-align:left;border: 1px solid;">
+            <h3>Add New Contact</h3>
+            <div id="formContainer"></div>
+            <div style="text-align: right;">
+                <input id="saveContactButton" type="button" value="Save Contact" />
+            </div>
+        </div>
+    </div>
+-->
+    <!-- Edit Modal 
+    <div id="updateContactModal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="text-align:left">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Contact</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="modalFormContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default save">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    <!-- View Modal 
+    <div id="viewContactModal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="text-align:left">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">View Contact</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>First Name: </label>
+                        <span class="firstName"></span>
+                    </div>
+                    <div>
+                        <label>Last Name: </label>
+                        <span class="lastName"></span>
+                    </div>
+                    <div>
+                        <label>Phone: </label>
+                        <span class="phoneNum"></span>
+                    </div>
+                    <div>
+                        <label>Email: </label>
+                        <span class="email"></span>
+                    </div>
+
+                    <div>
+                        <label>Contact Type: </label>
+                        <span class="contactType"></span>
+                    </div>
+                    <div style="display:none">
+                        <label>Faculty: </label>
+                        <span class="faculty"></span>
+                    </div>
+                    <div style="display:none">
+                        <label>Graduation Year: </label>
+                        <span class="graduationYear"></span>
+                    </div>
+                    <div style="display:none">
+                        <label>Subject: </label>
+                        <span class="subject"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+<!--
+    <script id="formTemplate" type="text/x-custom-template">
+        <div>
+            <input class="contactId" type="hidden" placeholder="First Name" />
+            <div>
+                <input class="firstNameInput" type="text" placeholder="First Name" />
+                <input class="lastNameInput" type="text" placeholder="Last Name" />
+            </div>
+            <div>
+                <input class="phoneNumInput" type="text" placeholder="Phone Number" />
+                <input class="emailInput" type="text" placeholder="Email" />
+            </div>
+            <div>
+                <input class="facultyInput" style="display:none" type="text" placeholder="Faculty" />
+                <input class="graduationYearInput" style="display:none" type="text" placeholder="Graduation Year" />
+                <input class="subjectInput" style="display:none" type="text" placeholder="Subject" />
+                <select class="contactTypeSelect"></select>
+            </div>
+        </div>
+    </script>
+
+    <script>
+    -->
+        ////**************** Global Vars *************************//
+
+        //var apiUrl = "http://localhost:56996/api/Contacts/";
+        //var contactsArr = [];
+        //var contactsType = [{ name: "Student", type: 1 }, { name: "Alumni", type: 2 }, { name: "Lecturer", type: 3 }];
+
+        ////**************** Document ready *************************//
+
+        //$(document).ready(function () {
+
+        //    $.get(apiUrl, function (data) {
+        //        contactsArr = data;
+        //        renderResult();
+        //    }).fail(function () { alert('Error'); });
+
+        //    var formTemplate = $('#formTemplate').html();
+        //    $('#formContainer').append(formTemplate);
+        //    $('#modalFormContainer').append(formTemplate);
+
+        //    $("#searchButton").click(searchContacts);
+        //    $("#saveContactButton").click(saveNewContacts);
+        //    $("#updateContactModal .save").click(saveExistingContact);
+
+        //    $.each(contactsType, function (i, item) {
+        //        $('.contactTypeSelect').append($('<option>', {
+        //            value: item.type,
+        //            text: item.name
+        //        }));
+        //    });
+
+        //    $("#modalFormContainer .contactTypeSelect").change(function () {
+        //        displayContactTypeInputs($(this).val());
+        //    });
+
+        //});
+
+        ////**************** Methods *************************//
+
+        //function displayContactTypeInputs(contactType) {
+        //    $("#modalFormContainer .facultyInput").hide();
+        //    $("#modalFormContainer .graduationYearInput").hide();
+        //    $("#modalFormContainer .subjectInput").hide();
+
+        //    switch (contactType) {
+        //        case "1":
+        //            var faculty = $("#modalFormContainer .facultyInput");
+        //            faculty.val("");
+        //            faculty.show();
+        //            break;
+        //        case "2":
+        //            var graduationYear = $("#modalFormContainer .graduationYearInput");
+        //            graduationYear.val("");
+        //            graduationYear.show();
+        //            break;
+        //        case "3":
+        //            var subject = $("#modalFormContainer .subjectInput");
+        //            subject.val("");
+        //            subject.show();
+        //            break;
+        //        default:
+        //    }
+        //}
+
+        //function renderResult() {
+        //    $("#contactsTbl > tbody").html("");
+        //    $.each(contactsArr, function (index, el) {
+        //        $("#contactsTbl").find('tbody')
+        //            .append("<tr><td>" + ne(el.FirstName) + "</td><td>"
+        //            + ne(el.LastName) + "</td><td>"
+        //            + ze(el.PhoneNum) + "</td><td>"
+        //            + ne(el.Email) + "</td><td>"
+        //            + getContactTypeById(el.ContactType) + "</td>"
+        //            + "<td><a href='#' onclick='openViewModal(" + el.Id + ")'>View</a>&nbsp;&nbsp;"
+        //            + "<a href= '#' onclick= 'openUpdateModal(" + el.Id + ")' > Edit</a >&nbsp;&nbsp;"
+        //            + "<a href='#' onclick='deleteContact(" + el.Id + ")'>Delete</a></td></tr > ");
+
+        //    });
+        //}
+
+        //function searchContacts() {
+        //    $.get(apiUrl, { keyWords: $('#keyWordsInput').val(), searchBy: $('#searchBySelect').val() }, function (data) {
+        //        contactsArr = data;
+        //        renderResult();
+        //    });
+        //}
+
+        //function saveNewContacts() {
+        //    var data = {
+        //        FirstName: $('#formContainer .firstNameInput').val(),
+        //        LastName: $('#formContainer .lastNameInput').val(),
+        //        ContactType: $('#formContainer .contactTypeSelect').val(),
+        //        PhoneNum: $('#formContainer .phoneNumInput').val(),
+        //        Email: $('#formContainer .emailInput').val()
+        //    };
+
+        //    $.post(apiUrl, data, function (data) {
+        //        contactsArr.push(data);
+        //        renderResult();
+        //    });
+        //}
+
+        //function openViewModal(id) {
+        //    var contact = contactsArr.find(x => x.Id === id);
+
+        //    $('#viewContactModal').modal('toggle');
+
+        //    $('#viewContactModal .firstName').text(ne(contact.FirstName));
+        //    $('#viewContactModal .lastName').text(ne(contact.LastName));
+        //    $('#viewContactModal .contactType').text(getContactTypeById(contact.ContactType));
+        //    $('#viewContactModal .phoneNum').text(ze(contact.PhoneNum));
+        //    $('#viewContactModal .email').text(ne(contact.Email));
+
+        //    var faculty = $("#viewContactModal .faculty");
+        //    var graduationYear = $("#viewContactModal .graduationYear");
+        //    var subject = $("#viewContactModal .subject");
+
+        //    faculty.closest('div').hide();
+        //    graduationYear.closest('div').hide();
+        //    subject.closest('div').hide();
+
+        //    switch (contact.ContactType) {
+        //        case 1:
+        //            faculty.text(ne(contact.Faculty));
+        //            faculty.closest('div').show();
+        //            break;
+        //        case 2:
+        //            graduationYear.text(ze(contact.GraduationYear));
+        //            graduationYear.closest('div').show();
+        //            break;
+        //        case 3:
+        //            subject.text(ne(contact.Subject));
+        //            subject.closest('div').show();
+        //            break;
+        //        default:
+        //    }
+        //}
+
+        //function openUpdateModal(id) {
+        //    var contact = contactsArr.find(x => x.Id === id);
+        //    displayContactTypeInputs(contact.ContactType.toString());
+        //    $('#updateContactModal').modal('toggle');
+
+        //    $('#modalFormContainer .contactId').val(contact.Id);
+        //    $('#modalFormContainer .firstNameInput').val(contact.FirstName);
+        //    $('#modalFormContainer .lastNameInput').val(contact.LastName);
+        //    $('#modalFormContainer .contactTypeSelect').val(contact.ContactType);
+        //    $('#modalFormContainer .phoneNumInput').val(contact.PhoneNum);
+        //    $('#modalFormContainer .emailInput').val(contact.Email);
+        //}
+
+        //function saveExistingContact(id) {
+        //    var contactType = $('#modalFormContainer .contactTypeSelect').val();
+
+        //    var data = {
+        //        Id: $('#modalFormContainer .contactId').val(),
+        //        FirstName: $('#modalFormContainer .firstNameInput').val(),
+        //        LastName: $('#modalFormContainer .lastNameInput').val(),
+        //        ContactType: contactType,
+        //        PhoneNum: $('#modalFormContainer .phoneNumInput').val(),
+        //        Email: $('#modalFormContainer .emailInput').val()
+        //    };
+
+        //    var routeAction;
+        //    switch (contactType) {
+        //        case "1":
+        //            routeAction = "student";
+        //            data.Faculty = $('#modalFormContainer .facultyInput').val();
+        //            break;
+        //        case "2":
+        //            routeAction = "alumni";
+        //            data.GraduationYear = $('#modalFormContainer .graduationYearInput').val();
+        //            break;
+        //        case "3":
+        //            routeAction = "lecturer";
+        //            data.Subject = $('#modalFormContainer .subjectInput').val();
+        //            break;
+        //    }
+        //    $.put(apiUrl + routeAction + "/", data, function (data) {
+        //        var ind = contactsArr.findIndex(x => x.Id === data.Id);
+        //        contactsArr.splice(ind, 1, data);
+        //        renderResult();
+        //        $('#updateContactModal').modal('toggle');
+        //    });
+        //}
+
+        //function deleteContact(id) {
+        //    $.delete(apiUrl + id, function () {
+        //        var ind = contactsArr.findIndex(x => x.Id === id);
+        //        contactsArr.splice(ind, 1);
+        //        renderResult();
+        //    });
+        //}
+
+        //function getContactTypeById(typeId) {
+        //    return contactsType.find(x => x.type === typeId).name;
+        //}
+
+        ////**************** Helpers *************************//
+
+        //$.put = function (url, data, callback, type) {
+
+        //    if ($.isFunction(data)) {
+        //        type = type || callback,
+        //            callback = data,
+        //            data = {}
+        //    }
+
+        //    return $.ajax({
+        //        url: url,
+        //        type: 'PUT',
+        //        success: callback,
+        //        data: data,
+        //        contentType: type
+        //    });
+        //}
+
+        //$.delete = function (url, callback, type) {
+        //    return $.ajax({
+        //        url: url,
+        //        type: 'DELETE',
+        //        success: callback,
+        //        contentType: type
+        //    });
+        //}
+
+        //function ne(str) {
+        //    if (str == null) {
+        //        return "";
+        //    }
+        //    return str;
+        //}
+
+        //function ze(num) {
+        //    if (num === 0) {
+        //        return "";
+        //    }
+        //    return num;
+        //}
+        <!--
+    </script>
+</body>
+</html>
+-->
+</body>
+</html>
+
+
+
+
