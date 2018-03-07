@@ -82,8 +82,7 @@
     mutable types are those whose data members can be changed after the instance is created <br />
     but Immutable types are those whose data members can not be changed after the instance is created.<br />
     strings cannot be altered. When you alter a string (by adding to it for example), you are actually creating a new string.<br />
-    But StringBuilder is not immutable (rather, it is mutable)<br />
-    <br /><br />
+    But StringBuilder is not immutable (rather, it is mutable)<br /><br />
     
     <b><u><a href="./DependencyInjection.jpg">Dependency Injection (DI) and Inversion of Control (IOC)</a></u></b><br />
 IOC can be done using Dependency Injection (DI). <br />
@@ -103,27 +102,27 @@ inverting the control to some other entity<br /><br />
         List<T>
             implements the generic IEnumerable<T>
                 <br />
-                interface and can be used easily in LINQ<br />
-                <br /><br />
+                interface and can be used easily in LINQ<br /><br />
+        
                 <b><u>dynamic and generics</u></b><br />
-                Generics allow you to know (at compile time) about the type you are working with (type safety)<br />
-                <br /><br />
+                Generics allow you to know (at compile time) about the type you are working with (type safety)<br /><br />
+        
                 <b><u>What does “where</u></b><br />
                 generic constraints to limit the type of each generic argument<br />
+        
                 <b><u>What does “where T : class, new()”</u></b><br />
                 constraint on the generic parameter T. It must be a class (reference type) and must have a public parameter-less default constructor.<br />
                 That means T can't be an int, float, double, DateTime or any other struct (value type).<br />
-                It could be a string, or any other custom reference type, as long as it has a default or parameter-less constructor<br />
-                <br /><br />
-                <b><u>browser cache is a temporary storage location on your computer for files downloaded by your browser to display websites</u></b><br />
-                <br /><br />
+                It could be a string, or any other custom reference type, as long as it has a default or parameter-less constructor<br /><br />
+        
+                <b><u>browser cache is a temporary storage location on your computer for files downloaded by your browser to display websites</u></b><br /><br />
         
                 <b><u>Reflection </u></b><br />
                 objects used for obtaining type information at runtime<br />
                 <br /><br />
                 <b><u>eval() JavaScript</u></b><br />
-                evaluates JavaScript code represented as a string. console.log(eval('2 + 2'));<br />
-                <br /><br />
+                evaluates JavaScript code represented as a string. console.log(eval('2 + 2'));<br /><br />
+        
                 <b><u>Javascript call() & apply() vs bind()?</u></b><br />
                 Call/apply call the function immediately,<br />
                 bind returns a function that, when later executed, will have the correct context set for calling the original function.<br />
