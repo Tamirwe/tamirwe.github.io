@@ -195,10 +195,13 @@ static Func&lt;string, char, string[]&gt; splitStr2 = delegate (string str, char
    return str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
 };
 
-<b><u>Action<TParameter> used when we do not have any return type from method.</u></b> Method with void signature is being used with Action delegate.
-<b><u>Predicate&lt;in T> function pointer for method which returns boolean value.</u></b> They are commonly used for iterating a collection or to verify if the value does already exist.
-<b><u>Converter&lt;TInput, TOutput> delegate is used when you need to migrate / convert one collection into another by using some algorithm.</u></b>
+<b><u>Action<TParameter> used when we do not have any return type from method.</u></b> 
+Method with void signature is being used with Action delegate.
 
+<b><u>Predicate&lt;in T> function pointer for method which returns boolean value.</u></b> 
+They are commonly used for iterating a collection or to verify if the value does already exist.
+
+<b><u>Converter&lt;TInput, TOutput> delegate is used when you need to migrate / convert one collection into another by using some algorithm.</u></b>
 
 Converter<Employee, XEmployee&gt; tempConvertorPointer = new Converter<Employee, XEmployee>(tempObj.FifthTestFunction);
 
@@ -219,7 +222,9 @@ Employee[] lstEmployee = (new Employee[]
 XEmployee[] xEmployee = Array.ConvertAll(lstEmployee, tempConvertorPointer);
 Console.ReadKey(); 
 
-<b><u>Comparison&lt;T&gt; delegate is used to sort or order the data inside a collection.</u></b> It takes two parameters as generic input type and return type should always be int.
+<b><u>Comparison&lt;T&gt; delegate is used to sort or order the data inside a collection.</u></b> 
+It takes two parameters as generic input type and return type should always be int.
+
 Comparison<Employee> tempComparisonPointer = new Comparison<Employee>(tempObj.SixTestFunction);
 public int SixTestFunction(Employee strParameter1, Employee strParamater2)
 {
