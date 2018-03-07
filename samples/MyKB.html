@@ -165,8 +165,8 @@ Basically, a Task<T> "promises" to return you a T, but not right now
         
 <pre>
 
-Delegate is a pointer to a method. 
-Delegate can be passed as a parameter to a method. 
+<b><u>Delegate is a pointer to a method. </u></b>
+<b><u>Delegate can be passed as a parameter to a method. </u></b>
 We can change the method implementation dynamically at run-time, 
 only thing we need to follow doing so would be to maintain the parameter type & return type.
 Delegates are used for implementing events and call back methods.
@@ -186,21 +186,21 @@ class Program
     }
 }
 
-Func &lt;TParameter, TOutput &gt; is a generic delegate . It has zero or more input parameters and one out parameter.
+<b><u>Func&lt;TParameter, TOutput&gt; is a generic delegate . It has zero or more input parameters and one out parameter.</u></b>
 
-static Func<string, char, string[]> splitStr = (str, delimiter) => str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+static Func&lt;string, char, string[]&gt; splitStr = (str, delimiter) => str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
 
-static Func<string, char, string[]> splitStr2 = delegate (string str, char delimiter)
+static Func&lt;string, char, string[]&gt; splitStr2 = delegate (string str, char delimiter)
 {
    return str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
 };
 
-Action<TParameter> used when we do not have any return type from method. Method with void signature is being used with Action delegate.
-Predicate<in T> function pointer for method which returns boolean value. They are commonly used for iterating a collection or to verify if the value does already exist.
-Converter<TInput, TOutput> delegate is used when you need to migrate / convert one collection into another by using some algorithm.
+<b><u>Action<TParameter> used when we do not have any return type from method.</u></b> Method with void signature is being used with Action delegate.
+<b><u>Predicate&lt;in T> function pointer for method which returns boolean value.</u></b> They are commonly used for iterating a collection or to verify if the value does already exist.
+<b><u>Converter&lt;TInput, TOutput> delegate is used when you need to migrate / convert one collection into another by using some algorithm.</u></b>
 
 
-Converter<Employee, XEmployee> tempConvertorPointer = new Converter<Employee, XEmployee>(tempObj.FifthTestFunction);
+Converter<Employee, XEmployee&gt; tempConvertorPointer = new Converter<Employee, XEmployee>(tempObj.FifthTestFunction);
 
 //Code block which get executed while iteration 
  public XEmployee FifthTestFunction(Employee employee)
@@ -219,7 +219,7 @@ Employee[] lstEmployee = (new Employee[]
 XEmployee[] xEmployee = Array.ConvertAll(lstEmployee, tempConvertorPointer);
 Console.ReadKey(); 
 
-Comparison<T> delegate is used to sort or order the data inside a collection. It takes two parameters as generic input type and return type should always be int.
+<b><u>Comparison&lt;T&gt; delegate is used to sort or order the data inside a collection.</u></b> It takes two parameters as generic input type and return type should always be int.
 Comparison<Employee> tempComparisonPointer = new Comparison<Employee>(tempObj.SixTestFunction);
 public int SixTestFunction(Employee strParameter1, Employee strParamater2)
 {
