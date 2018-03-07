@@ -163,6 +163,80 @@ inverting the control to some other entity<br /><br />
 Basically, a Task<T> "promises" to return you a T, but not right now       
         <br />
         
+<pre>
+
+Delegate is a pointer to a method. 
+Delegate can be passed as a parameter to a method. 
+We can change the method implementation dynamically at run-time, 
+only thing we need to follow doing so would be to maintain the parameter type & return type.
+Delegates are used for implementing events and call back methods.
+
+class Program
+{
+    static int Sum(int x, int y)
+    {
+        return x + y;
+    }
+
+    static void Main(string[] args)
+    {
+        SomeOperation add = Sum;
+        int result = add(10, 10);
+        Console.WriteLine(result); 
+    }
+}
+
+Func<TParameter, TOutput> is a generic delegate . It has zero or more input parameters and one out parameter.
+
+static Func<string, char, string[]> splitStr = (str, delimiter) => str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+
+static Func<string, char, string[]> splitStr2 = delegate (string str, char delimiter)
+{
+   return str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+};
+
+Action<TParameter> used when we do not have any return type from method. Method with void signature is being used with Action delegate.
+Predicate<in T> function pointer for method which returns boolean value. They are commonly used for iterating a collection or to verify if the value does already exist.
+Converter<TInput, TOutput> delegate is used when you need to migrate / convert one collection into another by using some algorithm.
+
+
+Converter<Employee, XEmployee> tempConvertorPointer = new Converter<Employee, XEmployee>(tempObj.FifthTestFunction);
+
+//Code block which get executed while iteration 
+ public XEmployee FifthTestFunction(Employee employee)
+ {
+    return new XEmployee() {Name = employee.Name, Age = employee.Age};
+ } 
+
+Employee[] lstEmployee = (new Employee[]
+            {
+                new Employee(){ Name = "Ashwin", Age = 31},
+                new Employee(){ Name = "Akil", Age = 25},
+                new Employee(){ Name = "Amit", Age = 28},
+                new Employee(){ Name = "Ajay", Age = 29},
+            });
+
+XEmployee[] xEmployee = Array.ConvertAll(lstEmployee, tempConvertorPointer);
+Console.ReadKey(); 
+
+Comparison<T> delegate is used to sort or order the data inside a collection. It takes two parameters as generic input type and return type should always be int.
+Comparison<Employee> tempComparisonPointer = new Comparison<Employee>(tempObj.SixTestFunction);
+public int SixTestFunction(Employee strParameter1, Employee strParamater2)
+{
+            return strParameter1.Name.CompareTo(strParamater2.Name);
+}
+
+Array.Sort(lstEmployee, tempComparisonPointer);
+Console.ReadKey();
+
+
+
+
+</pre>
+        
+        
+        
+        
         <div dir="rtl">
             <b><u>תאור חיפוש מהיר של שמות - autoComplete</u></b><br />
             הבעיה חיפוש מהיר ב 
