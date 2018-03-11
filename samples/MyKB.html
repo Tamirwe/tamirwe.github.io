@@ -3,153 +3,203 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <style>
+        h2 {
+            -webkit-margin-before: 1.0em;
+            -webkit-margin-after: 0.1em;
+            font-size: 1.3em;
+            text-decoration: underline;
+        }
+
+        h3 {
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 0.1em;
+            font-size: 1.05em;
+            text-decoration: underline;
+        }
+
+        pre {
+            margin: 0.5em 0;
+        }
+    </style>
 </head>
 <body>
-    <b><u>UPDATE by other table</u></b> <br />
-    <u>mySql</u><br />
-    UPDATE Workers ,Bonuses<br />
-    SET salary = (Salary + Bonuses.Bonus)<br />
-    WHERE Workers.WorkerId = Bonuses.WorkerId<br />
-    <u>sqlServer</u><br />
-    UPDATE Workers<br />
-    SET Workers.Salary =  (Workers.Salary + Bonuses.Bonus)<br />
-    FROM Bonuses INNER JOIN Workers ON Bonuses.WorkerId = Workers.WorkerId<br />
-    <br />
-    <b><u>Filters Attributes</u></b><br />
-    <u>Four Basic Types of Filters</u><br />
-    Authentication<br />
-    Authorization<br />
-    Action<br />
-    Result<br />
-    <br />
-    [Authorize(Roles="trader")]<br />
-    [OutputCache(Duration=60)]<br />
-    [HttpGet]<br />
-    [HandleError]<br />
-    <br />
-    <b><u>GET  vs POST</u></b><br />
-    <u>GET</u><br />
-    query string (name/value pairs) is sent in the URL of a GET request:/test/demo_form.php?name1=value1&name2=value2<br />
-    GET requests can be cached<br />
-    GET requests remain in the browser history<br />
-    GET requests can be bookmarked<br />
-    GET requests should never be used when dealing with sensitive data<br />
-    GET requests have length restrictions<br />
-    GET requests should be used only to retrieve data<br />
-    Restrictions on data type Only ASCII characters allowed<br />
-    <br />
-    <u>POST</u><br />
-    query string (name/value pairs) is sent in the HTTP message body of a POST request:<br />
-    POST requests are never cached<br />
-    POST requests do not remain in the browser history<br />
-    POST requests cannot be bookmarked<br />
-    POST requests have no restrictions on data length<br />
-    Post No restrictions. Binary data is also allowed<br />
-    <br /><br />
-    
-    <b><u>Net Framework</u></b>
-     is a platform that provides tools and technologies to develop Windows, Web and Enterprise applications. <br />
-    It mainly contains two components,<br />
-1.   Common Language Runtime (CLR)<br />
-2.    .Net Framework Class Library. <br />
-    <br />
-    <b><u>CLR</u></b><br />
-    provides an environment to run all the .Net Programs. The code which runs under the CLR is called as Managed Code. <br />
-    Programmers need not to worry on managing the memory if the programs are running under the CLR as it provides memory management and thread management.<br />
-    CLR manages the execution of programs written in different supported languages.<br />
-    CLR transforms source code into a form of bytecode known as Common Intermediate Language (CIL).<br />
-    At run time, CLR handles the execution of the CIL code.<br />
-    <br /><br />
-    <b><u>JIT</u></b><br />
-    When you compile your C# code in visual studio it gets turned into IL<br />
-    During runtime the IL is interpreted into machine code and then it's executed.<br />
-    This process is called Just In Time compilation or JIT for short.<br />
-    Only the IL that is needed is transformed into machine code (and only once, it's "cached" once it's compiled into machinecode).<br />
-    <br /><br />
-    
-    <b><u>OOP</u></b><br />
-    Encapsulation :<br />
-    Inheritance :<br />
-    Abstraction & Encapsulation : used to display only necessary and essential features of an object to ouside the world.<br />
-    Means displaying what is necessary and encapsulate the unnecessary things to outside the world.<br />
-    Hiding can be achieved by using "private" access modifiers.<br />
-    Polymorphism is of two types:<br />
-    Compile time polymorphism/Overloading<br />
-    Runtime polymorphism/Overriding<br />
-    <br /><br />
-    
-    <b><u>Mutable And Immutable Class</u></b><br />
-    mutable types are those whose data members can be changed after the instance is created <br />
-    but Immutable types are those whose data members can not be changed after the instance is created.<br />
-    strings cannot be altered. When you alter a string (by adding to it for example), you are actually creating a new string.<br />
-    But StringBuilder is not immutable (rather, it is mutable)<br /><br />
-    
-    <b><u><a href="./DependencyInjection.jpg">Dependency Injection (DI) and Inversion of Control (IOC)</a></u></b><br />
-IOC can be done using Dependency Injection (DI). <br />
-It explains how to inject the concrete implementation into a class that is using abstraction, <br />
-in other words an interface inside. <br />
-The main idea of dependency injection is to reduce the coupling between classes <br />
-    and move the binding of abstraction and concrete implementation out of the dependent class<br /><br />
-Don't Call Me, we will call you<br />
-inverting the control to some other entity<br /><br />
+    <h2>SQL - UPDATE by other table</h2>
+    <h3>mySql</h3>
+    <pre>
+    UPDATE Workers ,Bonuses
+    SET salary = (Salary + Bonuses.Bonus)
+    WHERE Workers.WorkerId = Bonuses.WorkerId
+</pre>
+    <h3>sqlServer</h3>
+    <pre>
+    UPDATE Workers
+    SET Workers.Salary =  (Workers.Salary + Bonuses.Bonus)
+    FROM Bonuses INNER JOIN Workers ON Bonuses.WorkerId = Workers.WorkerId
+ </pre>
 
-    
-    <b><u>ArrayList vs List<> in C#</u></b><br />
-    ArrayList can only create collection for Object type<br />
-    List<T>
-        is a generic class.<br />
-        It supports storing values of a specific type without casting to or from object (which would have incurred boxing/unboxing overhead when T is a value type in the ArrayList case)<br />
-        List<T>
-            implements the generic IEnumerable<T>
-                <br />
-                interface and can be used easily in LINQ<br /><br />
-        
-                <b><u>dynamic and generics</u></b><br />
-                Generics allow you to know (at compile time) about the type you are working with (type safety)<br /><br />
-        
-                <b><u>What does “where</u></b><br />
-                generic constraints to limit the type of each generic argument<br />
-        
-                <b><u>What does “where T : class, new()”</u></b><br />
-                constraint on the generic parameter T. It must be a class (reference type) and must have a public parameter-less default constructor.<br />
-                That means T can't be an int, float, double, DateTime or any other struct (value type).<br />
-                It could be a string, or any other custom reference type, as long as it has a default or parameter-less constructor<br /><br />
-        
-                <b><u>browser cache is a temporary storage location on your computer for files downloaded by your browser to display websites</u></b><br /><br />
-        
-                <b><u>Reflection </u></b><br />
-                objects used for obtaining type information at runtime<br />
-                <br /><br />
-                <b><u>eval() JavaScript</u></b><br />
-                evaluates JavaScript code represented as a string. console.log(eval('2 + 2'));<br /><br />
-        
-                <b><u>Javascript call() & apply() vs bind()?</u></b><br />
-                Call/apply call the function immediately,<br />
-                bind returns a function that, when later executed, will have the correct context set for calling the original function.<br />
-                This way you can maintain context in async callbacks and events
-                
-        <pre>
+    <h2>Filters Attributes</h2>
+    <div>Four Basic Types of Filters</div>
+    <div>Authentication</div>
+    <div>Authorization</div>
+    <div>Action</div>
+    <div>Result</div>
+    <br />
+    <div>[Authorize(Roles="trader")]</div>
+    <div>[OutputCache(Duration=60)]</div>
+    <div>[HttpGet]</div>
+    <div>[HandleError]</div>
+
+    <h2>GET  vs POST</h2>
+    <h3>GET</h3>
+
+    <div>query string (name/value pairs) is sent in the URL of a GET request:/test/demo_form.php?name1=value1&name2=value2</div>
+    <div> GET requests can be cached</div>
+    <div>GET requests remain in the browser history</div>
+    <div>GET requests can be bookmarked</div>
+    <div>GET requests should never be used when dealing with sensitive data</div>
+    <div>GET requests have length restrictions</div>
+    <div>GET requests should be used only to retrieve data</div>
+    <div>Restrictions on data type Only ASCII characters allowed</div>
+
+    <h3>POST</h3>
+    <div>query string (name/value pairs) is sent in the HTTP message body of a POST request:</div>
+    <div>POST requests are never cached</div>
+    <div>POST requests do not remain in the browser history</div>
+    <div>POST requests cannot be bookmarked</div>
+    <div>POST requests have no restrictions on data length</div>
+    <div>Post No restrictions. Binary data is also allowed</div>
+
+    <h2>Net Framework</h2>
+    <div>is a platform that provides tools and technologies to develop Windows, Web and Enterprise applications.</div>
+    <div>It mainly contains two components,</div>
+    <div>1.   Common Language Runtime (CLR)</div>
+    <div>2.    .Net Framework Class Library.</div>
+
+    <h2>CLR</h2>
+    <div>provides an environment to run all the .Net Programs. The code which runs under the CLR is called as Managed Code.</div>
+    <div>Programmers need not to worry on managing the memory if the programs are running under the CLR as it provides memory management and thread management.</div>
+    <div>CLR manages the execution of programs written in different supported languages.</div>
+    <div>CLR transforms source code into a form of bytecode known as Common Intermediate Language (CIL).</div>
+    <div>At run time, CLR handles the execution of the CIL code.</div>
+
+    <h2>JIT</h2>
+
+
+    <div>When you compile your C# code in visual studio it gets turned into IL</div>
+    <div>During runtime the IL is interpreted into machine code and then it's executed.</div>
+    <div>This process is called Just In Time compilation or JIT for short.</div>
+    <div>Only the IL that is needed is transformed into machine code (and only once, it's "cached" once it's compiled into machinecode).</div>
+
+    <h2>OOP</h2>
+
+
+
+
+    <h3>Abstraction & Encapsulation : used to display only necessary and essential features of an object to ouside the world.</h3>
+    <div>Means displaying what is necessary and encapsulate the unnecessary things to outside the world.</div>
+    <div>Hiding can be achieved by using "private" access modifiers.</div>
+    <h3>Inheritance :</h3>
+    <h3>Polymorphism is of two types:</h3>
+    <div>Compile time polymorphism/Overloading</div>
+    <div>Runtime polymorphism/Overriding</div>
+
+
+    <h2>Mutable And Immutable Class</h2>
+    <div>mutable types are those whose data members can be changed after the instance is created</div>
+    <div>but Immutable types are those whose data members can not be changed after the instance is created.</div>
+    <div>strings cannot be altered. When you alter a string (by adding to it for example), you are actually creating a new string.</div>
+    <div>But StringBuilder is not immutable (rather, it is mutable)</div>
+
+
+    <h2><a href="./DependencyInjection.jpg">Dependency Injection (DI) and Inversion of Control (IOC)</a></h2>
+    <div>IOC can be done using Dependency Injection (DI).</div>
+    <div>It explains how to inject the concrete implementation into a class that is using abstraction,</div>
+    <div>in other words an interface inside.</div>
+    <div>The main idea of dependency injection is to reduce the coupling between classes and move the binding of abstraction and concrete implementation out of the dependent class</div>
+    <div>Don't Call Me, we will call you</div>
+    <div>inverting the control to some other entity</div>
+
+
+
+
+
+
+
+
+
+    <h2>ArrayList vs List<> in C#</h2>
+    <div>ArrayList can only create collection for Object type</div>
+    <div>List&lt;T&gt; is a generic class.</div>
+    <div>It supports storing values of a specific type without casting to or from object (which would have incurred boxing/unboxing overhead when T is a value type in the ArrayList case)</div>
+    <div>List&lt;T&gt; implements the generic IEnumerable&lt;T&gt;</div>
+    <div>interface and can be used easily in LINQ</div>
+
+
+    <h2>dynamic and generics</h2>
+    <div>Generics allow you to know (at compile time) about the type you are working with (type safety)</div>
+
+
+
+
+
+    <h2>What does “where</h2>
+    <div>generic constraints to limit the type of each generic argument</div>
+
+
+    <h2>What does “where T : class, new()”</h2>
+    <div>constraint on the generic parameter T. It must be a class (reference type) and must have a public parameter-less default constructor.</div>
+    <div>That means T can't be an int, float, double, DateTime or any other struct (value type).</div>
+    <div>It could be a string, or any other custom reference type, as long as it has a default or parameter-less constructor</div>
+
+
+
+    <h2>browser cache is a temporary storage location on your computer for files downloaded by your browser to display websites</h2>
+
+
+    <h2>Reflection </h2>
+    <div>objects used for obtaining type information at runtime</div>
+
+
+
+
+    <h2>eval() JavaScript</h2>
+    <div>evaluates JavaScript code represented as a string. console.log(eval('2 + 2'));</div>
+
+
+
+    <h2>Javascript call() & apply() vs bind()?</h2>
+    <div>Call/apply call the function immediately,</div>
+    <div>bind returns a function that, when later executed, will have the correct context set for calling the original function.</div>
+
+
+    <pre>
                 var person = {
                        name: "James Smith",
                        hello: function(thing)  {       
-                                console.log(this.name + " says hello " + thing);<br />
+                                console.log(this.name + " says hello " + thing);
+
                                 }
                 }
                 </pre>
-                person.hello("world");  // output: "James Smith says hello world"<br />
-                person.hello.call({ name: "Jim Smith" }, "world"); // output: "Jim Smith says hello world"<br />
-                var helloFunc = person.hello.bind({ name: "Jim Smith" });<br />
-                helloFunc("world");  // output: Jim Smith says hello world"<br />
-                <br /><br />
-        
-        <b><u>Ref</u></b><br />
-        <pre>
+    <div>person.hello("world");  // output: "James Smith says hello world"</div>
+    <div>person.hello.call({ name: "Jim Smith" }, "world"); // output: "Jim Smith says hello world"</div>
+    <div>var helloFunc = person.hello.bind({ name: "Jim Smith" });</div>
+    <div>helloFunc("world");  // output: Jim Smith says hello world"</div>
+
+
+
+
+
+
+    <h2>Ref</h2>
+    <pre>
         static public void DoSomething(ref TestRef t) {
             t = new TestRef(); 
         }
         </pre>
-        And t will be changed after the method has completed. an assignment is a modification of the reference, thus is lost:
-        <pre>
+    And t will be changed after the method has completed. an assignment is a modification of the reference, thus is lost:
+    <pre>
         public void Method1(object obj) { 
             obj = new Object(); 
         } 
@@ -157,20 +207,22 @@ inverting the control to some other entity<br /><br />
             obj = _privateObject; 
         }
         </pre>
-        The methods above does not modifies the original object.<br />
-<br />
-        <b><u>Task</u></b><br />
-Basically, a Task<T> "promises" to return you a T, but not right now       
-        <br />
-        
-<pre>
+    <div>The methods above does not modifies the original object.</div>
 
-<b><u>Delegate is a pointer to a method. </u></b>
-<b><u>Delegate can be passed as a parameter to a method. </u></b>
-We can change the method implementation dynamically at run-time, 
-only thing we need to follow doing so would be to maintain the parameter type & return type.
-Delegates are used for implementing events and call back methods.
 
+    <h2>Task</h2>
+    <div>Basically, a Task&lt;T&gt;</div>
+    <div>"promises" to return you a T, but not right now</div>
+
+
+
+    <h2>Delegate is a pointer to a method. </h2>
+    <h2>Delegate can be passed as a parameter to a method. </h2>
+    <div>We can change the method implementation dynamically at run-time,</div>
+    <div>only thing we need to follow doing so would be to maintain the parameter type & return type.</div>
+    <div>Delegates are used for implementing events and call back methods.</div>
+
+    <pre>
 class Program
 {
     static int Sum(int x, int y)
@@ -185,31 +237,37 @@ class Program
         Console.WriteLine(result); 
     }
 }
+</pre>
 
-<b><u>Func&lt;TParameter, TOutput&gt; is a generic delegate . It has zero or more input parameters and one out parameter.</u></b>
+    <h2>Func&lt;TParameter, TOutput&gt; is a generic delegate . It has zero or more input parameters and one out parameter.</h2>
+    <div>static Func&lt;string, char, string[]&gt; splitStr = (str, delimiter) => str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);</div>
 
-static Func&lt;string, char, string[]&gt; splitStr = (str, delimiter) => str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
 
-static Func&lt;string, char, string[]&gt; splitStr2 = delegate (string str, char delimiter)
-{
-   return str.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
-};
 
-<b><u>Action<TParameter> used when we do not have any return type from method.</u></b> 
-Method with void signature is being used with Action delegate.
+    <pre>
+    static Func&lt;string, char, string[]&gt; splitStr2 = delegate (string str, char delimiter)
+    {
+    };
+    </pre>
 
-<b><u>Predicate&lt;in T> function pointer for method which returns boolean value.</u></b> 
-They are commonly used for iterating a collection or to verify if the value does already exist.
+    <h2>Action<TParameter> used when we do not have any return type from method.</h2>
+    <div>Method with void signature is being used with Action delegate.</div>
 
-<b><u>Converter&lt;TInput, TOutput> delegate is used when you need to migrate / convert one collection into another by using some algorithm.</u></b>
 
-Converter<Employee, XEmployee&gt; tempConvertorPointer = new Converter<Employee, XEmployee>(tempObj.FifthTestFunction);
+    <h2>Predicate&lt;in T> function pointer for method which returns boolean value.</h2>
+    <div>They are commonly used for iterating a collection or to verify if the value does already exist.</div>
 
-//Code block which get executed while iteration 
+
+
+    <h2>Converter&lt;TInput, TOutput> delegate is used when you need to migrate / convert one collection into another by using some algorithm.</h2>
+    <div>Converter<Employee, XEmployee&gt; tempConvertorPointer=new Converter<Employee, XEmployee>(tempObj.FifthTestFunction);</div>
+
+    <pre>
+//Code block which get executed while iteration
  public XEmployee FifthTestFunction(Employee employee)
  {
     return new XEmployee() {Name = employee.Name, Age = employee.Age};
- } 
+ }
 
 Employee[] lstEmployee = (new Employee[]
             {
@@ -220,56 +278,214 @@ Employee[] lstEmployee = (new Employee[]
             });
 
 XEmployee[] xEmployee = Array.ConvertAll(lstEmployee, tempConvertorPointer);
-Console.ReadKey(); 
-
-<b><u>Comparison&lt;T&gt; delegate is used to sort or order the data inside a collection.</u></b> 
-It takes two parameters as generic input type and return type should always be int.
-
-Comparison<Employee> tempComparisonPointer = new Comparison<Employee>(tempObj.SixTestFunction);
-public int SixTestFunction(Employee strParameter1, Employee strParamater2)
-{
-            return strParameter1.Name.CompareTo(strParamater2.Name);
-}
-
-Array.Sort(lstEmployee, tempComparisonPointer);
 Console.ReadKey();
+        </pre>
 
+    <h2>Comparison&lt;T&gt; delegate is used to sort or order the data inside a collection.</h2>
+    <div>It takes two parameters as generic input type and return type should always be int.</div>
+
+
+    <pre>
+    Comparison<Employee>        tempComparisonPointer = new Comparison<Employee>(tempObj.SixTestFunction);
+    public int SixTestFunction(Employee strParameter1, Employee strParamater2)
+    {
+        return strParameter1.Name.CompareTo(strParamater2.Name);
+    }
+
+    Array.Sort(lstEmployee, tempComparisonPointer);
+    Console.ReadKey();
+    </pre>
+
+    <h2>Singleton</h2>
+    <pre>
+public class Singleton
+{
+   private static Singleton instance;
+
+   private Singleton() {}
+
+   public static Singleton Instance
+   {
+      get 
+      {
+         if (instance == null)
+         {
+            instance = new Singleton();
+         }
+         return instance;
+      }
+   }
+}
+</pre>
+    <h2>
+        Bubble Sort
+    </h2>
+    <pre>
+int[] arr = { 800, 11, 50, 771, 649, 770, 240, 9 };
+
+int temp = 0;
+
+for (int write = 0; write < arr.Length; write++) {
+    for (int sort = 0; sort < arr.Length - 1; sort++) {
+        if (arr[sort] > arr[sort + 1]) {
+            temp = arr[sort + 1];
+            arr[sort + 1] = arr[sort];
+            arr[sort] = temp;
+        }
+    }
+}
 
 
 
 </pre>
-        
-        
-        
-        
-        <div dir="rtl">
-            <b><u>תאור חיפוש מהיר של שמות - autoComplete</u></b><br />
-            הבעיה חיפוש מהיר ב 
+
+    <h2>Check Parenthesis Balancing - javascript</h2>
+    <pre style="text-align:unset">
+         function isBalanced(str) {
+            str = str.replace(/[^\(\)]/g, '');
+            var isMatch = false, result = "Balanced !";
+            var matchIndex;
+
+            var arr = str.split('');
+            if (arr[0] == "(") {
+                isMatch = true;
+
+                while (arr.length > 0 && isMatch) {
+                    matchIndex = checkBalance(arr);
+                    if (matchIndex == 0) {
+                        isMatch = false;
+                    }
+                    else {
+                        arr.splice(matchIndex, 1)
+                        arr.shift();
+                    }
+                }
+            }
+
+            return isMatch;
+
+            function checkBalance(arr) {
+                var matchNum = 0;
+                var isOpen = false;
+
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] == '(') {
+                        if (!isOpen) {
+                            isOpen = true;
+                        }
+                        else {
+                            matchNum++;
+                        }
+                    }
+                    else if (isOpen && arr[i] == ')') {
+                        if (matchNum == 0) {
+                            return i;
+                        }
+                        else {
+                            matchNum--;
+                        }
+                    }
+                }
+                return 0;
+            }
+        }
+</pre>
+
+    <h2>Check Parenthesis Balancing - C#</h2>
+    <pre>
+        static void Main(string[] args)
+        {
+            string str = "(()())()((((())())())())";
+            str = "()";
+            str = "(()";
+            bool isMatch = true;
+            int matchIndex;
+            StringBuilder sb = new StringBuilder(str);
+
+            while (sb.Length > 0 && isMatch)
+            {
+                matchIndex = checkBalance(sb.ToString());
+                if (matchIndex == 0)
+                {
+                    isMatch = false;
+                }
+                else
+                {
+                    sb.Remove(matchIndex, 1);
+                    sb.Remove(0, 1);
+                }
+            }
+        }
+
+        private static int checkBalance(string str)
+        {
+            int matchNum = 0;
+            bool isOpen = false;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] == '(')
+                {
+                    if (!isOpen)
+                    {
+                        isOpen = true;
+                    }
+                    else
+                    {
+                        matchNum++;
+                    }
+                }
+                else if (isOpen && str[i] == ')')
+                {
+                    if (matchNum == 0)
+                    {
+                        return i;
+                    }
+                    else
+                    {
+                        matchNum--;
+                    }
+                }
+            }
+            return 0;
+        }
+</pre>
+
+    <div dir="rtl">
+        <h2>תאור חיפוש מהיר של שמות - autoComplete</h2>
+        <div>
+            הבעיה חיפוש מהיר ב
             O של 1
-            שמות או התחלה של שם לדוגמא : א, אב, אבר וכו <br />
-            <br />פתרון אפשרי דיקשינרי או האש-טייבל שיחזיק את כל הצירופים כמפתחות ואת כל האפשרויות כערך הערך יכול להיות כמערך של שמות
-            <br />לדוגמא המפתח "א" יהיה לו ערך מערך של השמות אברי, אברום, אברם, אבא , אקי , אמיקם וכו
-      <br />      המפתח "אב" יהיה לו ערך מערך של השמות אברי, אברום, אברם, אבא <br />
-            <br />
-        <b><u>תאור מנוע חיפוש</u></b><br />     
-יש צורך לחפש במהירות באלפי קבצים המכילים אלפי שורות טקסט.<br />
-בעברית יש בערך 650000 מילים ( 22 אותיות לידע כללי)<br />
-1. <br />נכניס את כל המילים לדיקשינרי הם יהיו המפתח ושמות הקבצים שמכילים את המילה יהיו הערך וגם הם יהיו בדיקשיונרי שבו הערך והמפתח הם שמות הקבצים
-חיפוש על פי מילות מפתח יהיה מעכשיו ב "O" של 1   <br /><br />
-רוצים למצוא כמה מילים במסמך לכן נצטרך למצוא את המסמכים המשותפים מכל המסמכים שחזרו בתוצאות.<br />
-לכן נעשה לולאה על שמות הקבצים שחזרו מאחת המילים שחופשו ואז נבדוק בדיקשיונרי של שמות הקבצים משאר המילים שחופשו. ושוב יש לנו חיפוש ב "O" של 1 .<br />
-ניתן לטייב את המסמכים בהוצאת מילות קישור וכו'<br />
-        <br />
-            <b><u>איפוס מערך גדול ביעילות</u></b><br />
-        
-על מנת להימנע מאיפוס בלולאה על המערך שבה הסיבוכיות היא "O" של "N" <br />
-ניצור מערך נוסף שיחזיק את ה טיים סטמפ של השינוי בתא של המערך <br />
-ברגע שמקבלים הוראת איפוס מחזיקים שני ערכים .<br />
-1. <br />הערך המאפס
-2. <br />טיים סטמפ של האיפוס
-<br />וכך בקשת ערך מהמערך תחזיר את הערך המאפס אם ה טיים סטאמפ של הערך במערך הנוסף גדול מה  טיים סטמפ של האיפוס
-        <br />
+            שמות או התחלה של שם לדוגמא : א, אב, אבר וכו
         </div>
-        <br />
+        <div>
+            פתרון אפשרי דיקשינרי או האש-טייבל שיחזיק את כל הצירופים כמפתחות ואת כל האפשרויות כערך הערך יכול להיות כמערך של שמות
+            לדוגמא המפתח "א" יהיה לו ערך מערך של השמות אברי, אברום, אברם, אבא , אקי , אמיקם וכו
+            המפתח "אב" יהיה לו ערך מערך של השמות אברי, אברום, אברם, אבא
+        </div>
+
+        <h2>תאור מנוע חיפוש</h2>
+        <div>
+            יש צורך לחפש במהירות באלפי קבצים המכילים אלפי שורות טקסט.
+            בעברית יש בערך 650000 מילים ( 22 אותיות לידע כללי)
+            1. נכניס את כל המילים לדיקשינרי הם יהיו המפתח ושמות הקבצים שמכילים את המילה יהיו הערך וגם הם יהיו בדיקשיונרי שבו הערך והמפתח הם שמות הקבצים
+            חיפוש על פי מילות מפתח יהיה מעכשיו ב "O" של 1
+            רוצים למצוא כמה מילים במסמך לכן נצטרך למצוא את המסמכים המשותפים מכל המסמכים שחזרו בתוצאות.
+            לכן נעשה לולאה על שמות הקבצים שחזרו מאחת המילים שחופשו ואז נבדוק בדיקשיונרי של שמות הקבצים משאר המילים שחופשו. ושוב יש לנו חיפוש ב "O" של 1 .
+            ניתן לטייב את המסמכים בהוצאת מילות קישור וכו'
+        </div>
+
+        <h2>איפוס מערך גדול ביעילות</h2>
+        <div>
+            על מנת להימנע מאיפוס בלולאה על המערך שבה הסיבוכיות היא "O" של "N"
+            ניצור מערך נוסף שיחזיק את ה טיים סטמפ של השינוי בתא של המערך
+            ברגע שמקבלים הוראת איפוס מחזיקים שני ערכים .
+        </div>
+        <div>1. הערך המאפס</div>
+        <div>
+            2. טיים סטמפ של האיפוס
+            וכך בקשת ערך מהמערך תחזיר את הערך המאפס אם ה טיים סטאמפ של הערך במערך הנוסף גדול מה  טיים סטמפ של האיפוס
+        </div>
+    </div>
 </body>
 </html>
